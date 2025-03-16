@@ -1,21 +1,21 @@
 <template>
   <div class="h-screen bg-[#1e1e2e] flex p-4 overflow-hidden">
+    <!-- Include the Popup -->
+    <PopupTutorial />
+
     <!-- Left Panel - Logo and Toggle -->
     <div class="w-[200px] mr-4 h-full">
       <div class="border-2 border-blue-500 rounded-xl bg-[#1e1e2e] h-full flex flex-col">
-        <!-- Logo Section -->
         <div class="flex-grow flex flex-col items-center justify-center px-16">
           <img src="/src/components/icons/MJS-LOGO.svg" alt="MJS Logo" class="w-48 h-48" />
         </div>
 
-        <!-- Toggle Section -->
         <div class="p-4">
           <div class="bg-[#1e1e2e] rounded-full p-4 flex items-center border border-blue-500 justify-center">
             <span class="text-white text-sm mr-2">Knuth-Morris</span>
             <div
               class="w-12 h-6 bg-gray-700 rounded-full p-1 cursor-pointer"
               @click="toggleMethod"
-              style="background-color: #374151"
             >
               <div
                 class="w-4 h-4 rounded-full transform duration-300 ease-in-out"
@@ -31,7 +31,6 @@
 
     <!-- Right Panel - Chat Section -->
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- Chat Messages - Scrollable -->
       <div class="flex-1 overflow-y-auto py-4 px-48" ref="messagesContainer">
         <div
           v-for="(message, index) in messages"
@@ -41,22 +40,13 @@
         >
           <div
             class="inline-block p-3 rounded-lg mb-3 text-white"
-            :class="
-              message.isUser
-                ? 'rounded-tr-2xl rounded-bl-2xl rounded-br-2xl'
-                : 'rounded-tl-2xl rounded-bl-2xl rounded-br-2xl'
-            "
-            :style="{
-              backgroundColor: message.isUser ? '#0f766e' : '#4854FE',
-              maxWidth: '80%',
-              wordBreak: 'break-word',
-            }"
+            :class="message.isUser ? 'rounded-tr-2xl rounded-bl-2xl rounded-br-2xl' : 'rounded-tl-2xl rounded-bl-2xl rounded-br-2xl'"
+            :style="{ backgroundColor: message.isUser ? '#0f766e' : '#4854FE', maxWidth: '80%', wordBreak: 'break-word' }"
           >
             {{ message.text }}
           </div>
         </div>
 
-        <!-- Thinking Indicator -->
         <div v-if="isThinking" class="flex justify-end">
           <div
             class="inline-block p-3 rounded-lg mb-3 text-white rounded-tl-2xl rounded-bl-2xl rounded-br-2xl"
@@ -81,17 +71,12 @@
             @keyup.enter="sendMessage"
             type="text"
             placeholder="Type your message here..."
-            class="flex-1 bg-gray-700 text-white rounded-3xl p-3 focus:outline-none focus:ring-1 focus:ring-blue-500 border border-blue-500"
-            :disabled="isThinking"
-            style="background-color: #374151"
+            class="flex-1 bg-gray-700 text-white rounded-3xl p-3 focus:outline-none border border-blue-500"
           />
 
-          <!-- Send Button -->
           <button
             @click="sendMessage"
-            class="ml-2 bg-teal-600 hover:bg-teal-700 text-white rounded-full p-3 focus:outline-none"
-            :disabled="isThinking"
-            style="background-color: #0d9488"
+            class="ml-2 bg-teal-600 hover:bg-teal-700 text-white rounded-full p-3"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -100,12 +85,7 @@
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
           </button>
         </div>
@@ -115,8 +95,13 @@
 </template>
 
 <script>
+import Popup from './components/icons/Popup.vue'
+
 export default {
   name: 'App',
+  components: {
+    PopupTutorial: Popup,
+  },
   data() {
     return {
       userInput: '',
@@ -131,57 +116,57 @@ export default {
       this.method = this.method === 'kmp' ? 'bm' : 'kmp'
     },
     async sendMessage() {
-      if (!this.userInput.trim() || this.isThinking) return;
+      if (!this.userInput.trim() || this.isThinking) return
 
-      const userMessage = this.userInput.trim();
-      this.messages.push({ text: userMessage, isUser: true });
-      this.userInput = '';
-      this.$nextTick(this.scrollToBottom);
+      const userMessage = this.userInput.trim()
+      this.messages.push({ text: userMessage, isUser: true })
+      this.userInput = ''
+      this.$nextTick(this.scrollToBottom)
 
-      this.isThinking = true;
+      this.isThinking = true
       try {
         const response = await fetch(this.apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pertanyaan: userMessage, method: this.method })
-        });
-        if (!response.ok) throw new Error('Network error');
-        const data = await response.json();
+          body: JSON.stringify({ pertanyaan: userMessage, method: this.method }),
+        })
+        if (!response.ok) throw new Error('Network error')
+        const data = await response.json()
         setTimeout(() => {
-          this.isThinking = false;
-          const botMessageIndex = this.messages.length;
-          this.messages.push({ text: '', isUser: false });
-          this.typeMessage(data.response, botMessageIndex);
-        }, 1000);
+          this.isThinking = false
+          const botMessageIndex = this.messages.length
+          this.messages.push({ text: '', isUser: false })
+          this.typeMessage(data.response, botMessageIndex)
+        }, 1000)
       } catch (error) {
-        this.isThinking = false;
-        this.messages.push({ text: 'Error processing request.', isUser: false });
-        this.$nextTick(this.scrollToBottom);
+        this.isThinking = false
+        this.messages.push({ text: 'Error processing request.', isUser: false })
+        this.$nextTick(this.scrollToBottom)
       }
     },
     typeMessage(fullText, messageIndex) {
-      let currentIndex = 0;
-      const typingSpeed = 30;
+      let currentIndex = 0
+      const typingSpeed = 30
       const typingInterval = setInterval(() => {
         if (currentIndex < fullText.length) {
-          this.messages[messageIndex].text = fullText.substring(0, currentIndex + 1);
-          currentIndex++;
-          this.$nextTick(this.scrollToBottom);
+          this.messages[messageIndex].text = fullText.substring(0, currentIndex + 1)
+          currentIndex++
+          this.$nextTick(this.scrollToBottom)
         } else {
-          clearInterval(typingInterval);
+          clearInterval(typingInterval)
         }
-      }, typingSpeed);
+      }, typingSpeed)
     },
     scrollToBottom() {
       if (this.$refs.messagesContainer) {
-        this.$refs.messagesContainer.scrollTop = this.$refs.messagesContainer.scrollHeight;
+        this.$refs.messagesContainer.scrollTop = this.$refs.messagesContainer.scrollHeight
       }
-    }
+    },
   },
   mounted() {
-    this.scrollToBottom();
-  }
-};
+    this.scrollToBottom()
+  },
+}
 </script>
 
 <style>
@@ -200,7 +185,6 @@ body,
   flex: 1;
   min-height: 0;
 }
-
 
 .thinking-dots {
   display: flex;
