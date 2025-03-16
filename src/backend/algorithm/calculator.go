@@ -31,10 +31,9 @@ func evaluateExpression(expression string) (float64, error) {
 				return 0, err
 			}
 			numbers = append(numbers, result)
-			i += len(subExpression) + 2 // +2 to skip ')' as well
+			i += len(subExpression) + 2
 		case '+', '-', '*', '/':
 			if len(numbers) == 0 {
-				// Handle negative numbers
 				if expression[i] == '-' {
 					numbers = append(numbers, 0)
 					operators = append(operators, string(expression[i]))
