@@ -1,7 +1,6 @@
 # Penerapan String Matching dan Regular Expression dalam Pembuatan ChatGPT Sederhana
 > Tugas Besar III IF2211 Strategi Algoritma Semester II Tahun 2022/2023
 .
-> Live demo [_here_](https://www.youtube.com).
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -12,17 +11,15 @@
 * [Project Status](#project-status)
 * [Acknowledgements](#acknowledgements)
 * [Authors](#authors)
-<!-- * [License](#license) -->
 
 
 ## General Information
-Sebuah aplikasi ChatGPT sederhana dengan mengaplikasikan pendekatan QA yang paling sederhana tersebut. Pencarian pertanyaan yang paling mirip dengan pertanyaan yang diberikan pengguna dilakukan dengan algoritma pencocokan string Knuth-Morris-Pratt (KMP) dan Boyer-Moore (BM).
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
+Sebuah aplikasi ChatGPT sederhana dengan mengaplikasikan pendekatan QA yang paling sederhana. Pencarian pertanyaan yang paling mirip dengan pertanyaan yang diberikan pengguna dilakukan dengan algoritma pencocokan string Knuth-Morris-Pratt (KMP) dan Boyer-Moore (BM).
 
 
 ## Technologies Used
-- Backend -> Golang using Gin, Gorm, and Axios
-- Frontend -> Next.js
+- Backend -> Golang using Gin-Gonic, Gorm, and SQL Lite
+- Frontend -> Vue.js using Tailwind CSS
 
 
 ## Features
@@ -34,7 +31,7 @@ Sebuah aplikasi ChatGPT sederhana dengan mengaplikasikan pendekatan QA yang pali
 
 
 ## Setup
-- Pastikan sudah install dependencies (Golang, npm, IDE yang dipilih)
+- Pastikan sudah install dependencies (Golang, Node.js, npm)
 
 
 ## Usage
@@ -49,38 +46,29 @@ Sebuah aplikasi ChatGPT sederhana dengan mengaplikasikan pendekatan QA yang pali
    cd <path repo>
    cd src
    ```
-4. Local Database setup
-    ```sh
-    pada setup.go di folder backend/model
-    gorm.Open(mysql.Open("root:(isi dengan pasword)@tcp(localhost:3306)/gpt"))
-    buka mariaDB pada cmd
-    create database gpt;
-   ```
-
-5. Jalankan backend
+4. Jalankan backend
    ```sh
-   cd services
+   cd src
    cd backend
    go run main.go
    ```
-6. Install npm packages
-   ```sh
-   npm install
-   ```
-7. Jalankan frontend
+5. Jalankan frontend
    ```js
+   cd src
+   cd frontend
+   npm install
    npm run dev
    ```
-8. Jalankan web pada http://localhost:3000
+6. Jalankan web pada http://localhost:5137
 
 
 ## Project Status
-- InsyaAllah complete
+- Completed
 
 
 ## Acknowledgements
 - Project ini ditujukan untuk memenuhi Tugas Besar III IF2211 Strategi Algoritma
-- Many thanks to chatGPT and our team
+- Many thanks to God for giving us the strength to complete this project
 
 
 ## Authors
@@ -89,11 +77,3 @@ Sebuah aplikasi ChatGPT sederhana dengan mengaplikasikan pendekatan QA yang pali
    [13521029 - M. Malik I. Baharsyah](https://github.com/malikbaharsyah)
 
    [13521030 - Jauza Lathifah Annassalafi](https://github.com/lostgirrlll)
-
-
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
